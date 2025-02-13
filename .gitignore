@@ -1,8 +1,17 @@
-# Ignore Gradle project-specific cache directory
+
 .gradle
 
-# Ignore Gradle build output directory
 build
 /out/*
+
 /.gitattributes
+
 /RUNNING_PID
+
+/.idea/
+
+!.idea/runConfigurations/*
+!.idea/compiler.xml
+!.idea/misc.xml
+!.idea/vcs.xml
+
