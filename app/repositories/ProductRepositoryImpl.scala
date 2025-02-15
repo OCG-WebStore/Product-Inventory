@@ -22,9 +22,10 @@ class ProductRepositoryImpl @Inject()(protected val dbConfigProvider: DatabaseCo
     def imageKey = column[String]("IMAGE_KEY")
     def customizable = column[Boolean]("CUSTOMIZABLE")
     def createdAt = column[Instant]("CREATED_AT")
+    def updatedAt = column[Instant]("UPDATED_AT")
 
     def * =
-      (id.?, name, description, price, category, imageKey.?, customizable, createdAt) <>
+      (id.?, name, description, price, category, imageKey.?, customizable, createdAt, updatedAt) <>
         ((Product.apply _).tupled,
           Product.unapply)
   }
@@ -43,7 +44,7 @@ class ProductRepositoryImpl @Inject()(protected val dbConfigProvider: DatabaseCo
   override def findById(id: Long): Future[Option[Product]] =
     db.run(products.filter(_.id === id).result.headOption)
 
-  def search(filter: ProductFilter = ProductFilter(None, None)): Future[Seq[Product]] = {
+  override def search(filter: ProductFilter = ProductFilter(None, None)): Future[Seq[Product]] = {
     val query = products
       .filterOpt(filter.minPrice)(_.price >= _)
       .filterOpt(filter.maxPrice)(_.price <= _)
@@ -55,7 +56,11 @@ class ProductRepositoryImpl @Inject()(protected val dbConfigProvider: DatabaseCo
 
   override def update(id: Long, product: Product): Future[Option[Product]] = {
     val query = (for {
-      rowsUpdated <- products.filter(_.id === id).update(product)
+      rowsUpdated <- products
+        .filter(_.id === id)
+        .update(
+          product.copy(updatedAt = Instant.now())
+        )
       result <- if (rowsUpdated > 0) {
         products.filter(_.id === id).result.headOption
       }

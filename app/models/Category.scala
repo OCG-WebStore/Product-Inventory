@@ -7,10 +7,12 @@ trait Category {
 }
 
 object Category {
-  val HOODIES = "hoodies"
-  val TSHIRTS = "t-shirts"
-  val TROUSERS = "trousers"
-  val GLOVES = "gloves"
+
+  final val HOODIES = "hoodies"
+  final val TSHIRTS = "t-shirts"
+  final val TROUSERS = "trousers"
+  final val GLOVES = "gloves"
+  final val OTHER = "other"
 
   implicit val categoryColumnType: BaseColumnType[Category] =
     MappedColumnType.base[Category,String](
@@ -25,6 +27,8 @@ object Category {
     case GLOVES => Gloves()
     case _ => throw new IllegalArgumentException("Invalid category")
   }
+
+  def unapply(cat: Category): Option[String] = Some(cat.stringValue)
 
   import play.api.libs.json.{Format, Json}
   implicit val categoryFormat: Format[Category] = Json.format[Category]
@@ -44,4 +48,8 @@ case class Trousers() extends Category {
 
 case class Gloves() extends Category {
   override def stringValue: String = Category.GLOVES
+}
+
+case class Other() extends Category {
+  override def stringValue: String = Category.OTHER
 }

@@ -1,6 +1,6 @@
 package controllers
 
-import controllers.request.CreateProductRequest
+import controllers.commands.CreateProductCommand
 import models.Product
 import services.ProductService
 import models.errors.{InvalidProduct, ProductNotFound}
@@ -29,9 +29,9 @@ class AdminProductController @Inject()(
     }
   }
 
-  def create(): Action[CreateProductRequest] = Action.async(parse.json[CreateProductRequest]) { implicit request =>
+  def create(): Action[CreateProductCommand] = Action.async(parse.json[CreateProductCommand]) { implicit request =>
     val productRequest = request.body
-    val product = Product(None, productRequest.name, productRequest.description, productRequest.price, productRequest.category, productRequest.imageUrl)
+    val product = Product(None, productRequest.name, productRequest.description, productRequest.price, productRequest.category, productRequest.imageKey)
 
     productService.createProduct(productRequest).map { createdProduct =>
       Created(Json.toJson(createdProduct))
@@ -40,9 +40,9 @@ class AdminProductController @Inject()(
     }
   }
 
-  def update(id: Long): Action[CreateProductRequest] = Action.async(parse.json[CreateProductRequest]) { implicit request =>
+  def update(id: Long): Action[CreateProductCommand] = Action.async(parse.json[CreateProductCommand]) { implicit request =>
     val productRequest = request.body
-    val product = Product(Some(id), productRequest.name, productRequest.description, productRequest.price, productRequest.category, productRequest.imageUrl)
+    val product = Product(Some(id), productRequest.name, productRequest.description, productRequest.price, productRequest.category, productRequest.imageKey)
 
     productService.updateProduct(id, product).map {
       case Some(updatedProduct) => Ok(Json.toJson(updatedProduct))
