@@ -25,6 +25,7 @@ object Category {
     case TSHIRTS => TShirts()
     case TROUSERS => Trousers()
     case GLOVES => Gloves()
+    case OTHER => Other()
     case _ => throw new IllegalArgumentException("Invalid category")
   }
 
