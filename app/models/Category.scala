@@ -1,56 +1,56 @@
 package models
 
+import play.api.libs.json._
 import slick.jdbc.PostgresProfile.api._
 
-trait Category {
+sealed trait Category {
   def stringValue: String
 }
 
 object Category {
-
-  final val HOODIES = "hoodies"
-  final val TSHIRTS = "t-shirts"
-  final val TROUSERS = "trousers"
-  final val GLOVES = "gloves"
-  final val OTHER = "other"
-
-  implicit val categoryColumnType: BaseColumnType[Category] =
-    MappedColumnType.base[Category,String](
-      cat => cat.stringValue,
-      str => Category(str)
-    )
-
-  def apply(str: String): Category = str match {
-    case HOODIES => Hoodies()
-    case TSHIRTS => TShirts()
-    case TROUSERS => Trousers()
-    case GLOVES => Gloves()
-    case OTHER => Other()
-    case _ => throw new IllegalArgumentException("Invalid category")
+  case object Hoodies extends Category {
+    val stringValue = "hoodies"
   }
 
-  def unapply(cat: Category): Option[String] = Some(cat.stringValue)
+  case object TShirts extends Category {
+    val stringValue = "t-shirts"
+  }
 
-  import play.api.libs.json.{Format, Json}
-  implicit val categoryFormat: Format[Category] = Json.format[Category]
-}
+  case object Trousers extends Category {
+    val stringValue = "trousers"
+  }
 
-case class Hoodies() extends Category {
-  override def stringValue: String = Category.HOODIES
-}
+  case object Gloves extends Category {
+    val stringValue = "gloves"
+  }
 
-case class TShirts() extends Category {
-  override def stringValue: String = Category.TSHIRTS
-}
+  case object Other extends Category {
+    val stringValue = "other"
+  }
 
-case class Trousers() extends Category {
-  override def stringValue: String = Category.TROUSERS
-}
+  def fromString(s: String): Option[Category] = s.toLowerCase match {
+    case Hoodies.stringValue => Some(Hoodies)
+    case TShirts.stringValue => Some(TShirts)
+    case Trousers.stringValue => Some(Trousers)
+    case Gloves.stringValue => Some(Gloves)
+    case Other.stringValue => Some(Other)
+    case _ => None
+  }
 
-case class Gloves() extends Category {
-  override def stringValue: String = Category.GLOVES
-}
+  implicit val categoryColumnType: BaseColumnType[Category] =
+    MappedColumnType.base[Category, String](
+      _.stringValue,
+      fromString(_).getOrElse(Other)
+    )
 
-case class Other() extends Category {
-  override def stringValue: String = Category.OTHER
+  implicit val categoryFormat: Format[Category] = new Format[Category] {
+    def reads(json: JsValue): JsResult[Category] = json.validate[String].flatMap { s =>
+      fromString(s) match {
+        case Some(category) => JsSuccess(category)
+        case None => JsError(s"Unknown category: $s")
+      }
+    }
+
+    def writes(category: Category): JsValue = JsString(category.stringValue)
+  }
 }
