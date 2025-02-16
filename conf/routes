@@ -1,6 +1,7 @@
 # Admin Product endpoints
 POST    /products          controllers.AdminProductController.create()
 GET     /products/:id      controllers.AdminProductController.get(id: Long)
+GET     /products          controllers.AdminProductController.list()
 PUT     /products/:id      controllers.AdminProductController.update(id: Long)
 DELETE  /products/:id      controllers.AdminProductController.delete(id: Long)
 
