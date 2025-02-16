@@ -30,10 +30,6 @@ dependencies {
     testRuntimeOnly(libs.scalaXml)
 }
 
-application {
-    mainClass = 'AppLoader'
-}
-
 play {
     platform {
         playVersion = project.playVersion

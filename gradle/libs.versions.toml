@@ -1,7 +1,6 @@
 [versions]
 
 awsSdk              = "2.20.135"
-gradlePlayPlugin    = "0.14"
 graphQL             = "2.1.3"
 graphQLPlay         = "2.0.1"
 guava               = "32.0.1-jre"
@@ -18,52 +17,54 @@ scalaTest           = "3.2.15"
 scalaTestJUnit      = "3.2.2.0"
 scalaXml            = "1.2.0"
 
+gradlePlayPlugin    = "0.14"
+
 ########################################################################################################################
 
 [libraries]
 
 # AWS SDK (S3)
-awsSdk         = { module = "software.amazon.awssdk:s3"                         , version.ref = "awsSdk"            }
+awsSdk          = { module = "software.amazon.awssdk:s3"                        , version.ref = "awsSdk"            }
 
 # GraphQL
-graphQL        = { module = "org.sangria-graphql:sangria_2.13"                  , version.ref = "graphQL"           }
-graphQLPlay    = { module = "org.sangria-graphql:sangria-play-json_2.13"        , version.ref = "graphQLPlay"       }
+graphQL         = { module = "org.sangria-graphql:sangria_2.13"                 , version.ref = "graphQL"           }
+graphQLPlay     = { module = "org.sangria-graphql:sangria-play-json_2.13"       , version.ref = "graphQLPlay"       }
 
 # Guava
-guava          = { module = "com.google.guava:guava"                            , version.ref = "guava"             }
+guava           = { module = "com.google.guava:guava"                           , version.ref = "guava"             }
 
 # Security (JWT)
-jwtPlay        = { module = "com.pauldijou:jwt-play_2.13"                       , version.ref = "jwtPlay"           }
+jwtPlay         = { module = "com.pauldijou:jwt-play_2.13"                      , version.ref = "jwtPlay"           }
 
 # Kafka
-kafka          = { module = "org.apache.kafka:kafka-clients"                    , version.ref = "kafka"             }
+kafka           = { module = "org.apache.kafka:kafka-clients"                   , version.ref = "kafka"             }
 
 # Logback
-logback        = { module = "ch.qos.logback:logback-classic"                    , version.ref = "logback"           }
-logbackEnc     = { module = "net.logstash.logback:logstash-logback-encoder"     , version.ref = "logbackEnc"        }
+logback         = { module = "ch.qos.logback:logback-classic"                   , version.ref = "logback"           }
+logbackEnc      = { module = "net.logstash.logback:logstash-logback-encoder"    , version.ref = "logbackEnc"        }
 
 # Play Framework
-play           = { module = "com.typesafe.play:play_2.13"                       , version.ref = "play"              }
-playGuice      = { module = "com.typesafe.play:play-guice_2.13"                 , version.ref = "play"              }
-playAkkaHttp   = { module = "com.typesafe.play:play-akka-http-server_2.13"      , version.ref = "play"              }
-playServer     = { module = "com.typesafe.play:play-server_2.13"                , version.ref = "play"              }
-playSlick      = { module = "com.typesafe.play:play-slick_2.13"                 , version.ref = "playSlick"         }
-playSlickEvo   = { module = "com.typesafe.play:play-slick-evolutions_2.13"      , version.ref = "playSlick"         }
+play            = { module = "com.typesafe.play:play_2.13"                      , version.ref = "play"              }
+playGuice       = { module = "com.typesafe.play:play-guice_2.13"                , version.ref = "play"              }
+playAkkaHttp    = { module = "com.typesafe.play:play-akka-http-server_2.13"     , version.ref = "play"              }
+playServer      = { module = "com.typesafe.play:play-server_2.13"               , version.ref = "play"              }
+playSlick       = { module = "com.typesafe.play:play-slick_2.13"                , version.ref = "playSlick"         }
+playSlickEvo    = { module = "com.typesafe.play:play-slick-evolutions_2.13"     , version.ref = "playSlick"         }
 
 # Database
-postgres       = { module = "org.postgresql:postgresql"                         , version.ref = "postgres"          }
-slick          = { module = "com.typesafe.slick:slick_2.13"                     , version.ref = "slick"             }
-slickHikariCp  = { module = "com.typesafe.slick:slick-hikaricp_2.13"            , version.ref = "slick"             }
+postgres        = { module = "org.postgresql:postgresql"                        , version.ref = "postgres"          }
+slick           = { module = "com.typesafe.slick:slick_2.13"                    , version.ref = "slick"             }
+slickHikariCp   = { module = "com.typesafe.slick:slick-hikaricp_2.13"           , version.ref = "slick"             }
 
 # Scala
-scala          = { module = "org.scala-lang:scala-library"                      , version.ref = "scala"             }
+scala           = { module = "org.scala-lang:scala-library"                     , version.ref = "scala"             }
 
 # ScalaTest
-scalaTest      = { module = "org.scalatest:scalatest_2.13"                      , version.ref = "scalaTest"         }
-scalaTestJUnit = { module = "org.scalatestplus:junit-4-13_2.13"                 , version.ref = "scalaTestJUnit"    }
+scalaTest       = { module = "org.scalatest:scalatest_2.13"                     , version.ref = "scalaTest"         }
+scalaTestJUnit  = { module = "org.scalatestplus:junit-4-13_2.13"                , version.ref = "scalaTestJUnit"    }
 
 # ScalaXml
-scalaXml       = { module = "org.scala-lang.modules:scala-xml_2.13"             , version.ref = "scalaXml"          }
+scalaXml        = { module = "org.scala-lang.modules:scala-xml_2.13"            , version.ref = "scalaXml"          }
 
 ########################################################################################################################
 
@@ -104,4 +105,4 @@ scalaTest = [
 
 [plugins]
 
-gradlePlay = { id = "org.gradle.playframework", version.ref = "gradlePlayPlugin"}
+gradlePlay          = { id = "org.gradle.playframework"         , version.ref = "gradlePlayPlugin"          }

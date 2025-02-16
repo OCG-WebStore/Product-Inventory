@@ -1,9 +1,9 @@
-# Admin Product endpoints
-POST    /products          controllers.AdminProductController.create()
-GET     /products/:id      controllers.AdminProductController.get(id: Long)
-GET     /products          controllers.AdminProductController.list()
-PUT     /products/:id      controllers.AdminProductController.update(id: Long)
-DELETE  /products/:id      controllers.AdminProductController.delete(id: Long)
+# Admin Product CRUD endpoints
+POST    /admin/products          controllers.AdminProductController.create()
+GET     /admin/products/:id      controllers.AdminProductController.get(id: Long)
+GET     /admin/products          controllers.AdminProductController.list()
+PUT     /admin/products/:id      controllers.AdminProductController.update(id: Long)
+DELETE  /admin/products/:id      controllers.AdminProductController.delete(id: Long)
 
-# Admin healthcheck endpoints
-GET     /ping              controllers.AdminProductController.ping()
+# Admin healthcheck endpoint
+GET     /admin/ping              controllers.AdminProductController.ping()
