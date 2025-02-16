@@ -1,9 +1,9 @@
 package controllers
 
-import controllers.commands.CreateProductCommand
-import models.Product
+import controllers.commands.{CreateProductCommand, UpdateProductCommand}
 import services.ProductService
 import models.errors.{InvalidProduct, ProductNotFound}
+import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc._
 
@@ -14,7 +14,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class AdminProductController @Inject()(
                                    val controllerComponents: ControllerComponents,
                                    productService: ProductService
-                                 )(implicit ec: ExecutionContext) extends BaseController {
+                                 )(implicit ec: ExecutionContext) extends BaseController with Logging {
 
   def list(): Action[AnyContent] = Action.async { implicit request =>
     productService.getAllProducts.map { products =>
@@ -30,21 +30,19 @@ class AdminProductController @Inject()(
   }
 
   def create(): Action[CreateProductCommand] = Action.async(parse.json[CreateProductCommand]) { implicit request =>
-    val productRequest = request.body
-    val product = Product(None, productRequest.name, productRequest.description, productRequest.price, productRequest.category, productRequest.imageKey)
+    val createCommand = request.body
 
-    productService.createProduct(productRequest).map { createdProduct =>
+    productService.createProduct(createCommand).map { createdProduct =>
       Created(Json.toJson(createdProduct))
     }.recover {
       case _: Throwable => BadRequest(Json.toJson(InvalidProduct("Invalid product data")))
     }
   }
 
-  def update(id: Long): Action[CreateProductCommand] = Action.async(parse.json[CreateProductCommand]) { implicit request =>
-    val productRequest = request.body
-    val product = Product(Some(id), productRequest.name, productRequest.description, productRequest.price, productRequest.category, productRequest.imageKey)
+  def update(id: Long): Action[UpdateProductCommand] = Action.async(parse.json[UpdateProductCommand]) { implicit request =>
+    val updateCommand = request.body
 
-    productService.updateProduct(id, product).map {
+    productService.updateProduct(id, updateCommand).map {
       case Some(updatedProduct) => Ok(Json.toJson(updatedProduct))
       case None => NotFound(s"Product with id $id not found")
     }.recover {

@@ -11,9 +11,10 @@ case class Product(
                     description: String,
                     price: Long,
                     category: Category,
-                    imageKey: Option[String] = None,
+                    imageKey: String,
                     customizable: Boolean = false,
-                    createdAt: Instant = Instant.now()
+                    createdAt: Instant = Instant.now(),
+                    updatedAt: Instant = Instant.now()
                   )
 
 object Product {
