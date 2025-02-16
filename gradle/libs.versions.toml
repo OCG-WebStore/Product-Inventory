@@ -7,6 +7,8 @@ graphQLPlay         = "2.0.1"
 guava               = "32.0.1-jre"
 jwtPlay             = "4.3.0"
 kafka               = "3.4.0"
+logback             = "1.4.11"
+logbackEnc          = "7.4"
 play                = "2.8.19"
 playSlick           = "5.0.2"
 postgres            = "42.5.4"
@@ -35,6 +37,10 @@ jwtPlay        = { module = "com.pauldijou:jwt-play_2.13"                       
 
 # Kafka
 kafka          = { module = "org.apache.kafka:kafka-clients"                    , version.ref = "kafka"             }
+
+# Logback
+logback        = { module = "ch.qos.logback:logback-classic"                    , version.ref = "logback"           }
+logbackEnc     = { module = "net.logstash.logback:logstash-logback-encoder"     , version.ref = "logbackEnc"        }
 
 # Play Framework
 play           = { module = "com.typesafe.play:play_2.13"                       , version.ref = "play"              }
@@ -79,12 +85,14 @@ db = [
 ]
 
 others = [
+    "awsSdk",
     "graphQL",
     "graphQLPlay",
     "guava",
+    "jwtPlay",
     "kafka",
-    "awsSdk",
-    "jwtPlay"
+    "logback",
+    "logbackEnc"
 ]
 
 scalaTest = [
