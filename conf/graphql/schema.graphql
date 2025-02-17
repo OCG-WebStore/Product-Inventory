@@ -1,0 +1,43 @@
+scalar Instant
+scalar Long
+
+"The category of the product"
+enum Category {
+  "Hoodies category"
+  HOODIES
+
+  "T-Shirts category"
+  TSHIRTS
+
+  "Trousers category"
+  TROUSERS
+
+  "Gloves category"
+  GLOVES
+
+  "Other products"
+  OTHER
+}
+
+"A product in the cataloger"
+type Product {
+  id: ID
+  name: String!
+  description: String!
+  price: Long!
+  category: Category!
+  imageKey: String!
+  customizable: Boolean!
+  createdAt: Instant!
+}
+
+type Query {
+  "Returns a list of products matching criteria."
+  allProducts: [Product!]!
+
+  "Returns a product by id."
+  productById(id: Long!): Product
+
+  "Returns a list of products by category."
+  productsByCategory(category: String!): [Product!]!
+}

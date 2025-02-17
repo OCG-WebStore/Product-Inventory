@@ -14,7 +14,8 @@ import scala.concurrent.{ExecutionContext, Future}
 class AdminProductController @Inject()(
                                    val controllerComponents: ControllerComponents,
                                    productService: ProductService
-                                 )(implicit ec: ExecutionContext) extends BaseController with Logging {
+                                 )(implicit ec: ExecutionContext)
+  extends BaseController with Logging {
 
   def list(): Action[AnyContent] = Action.async { implicit request =>
     productService.getAllProducts.map { products =>
