@@ -91,6 +91,9 @@ class ProductRepositoryImpl @Inject()(protected val dbConfigProvider: DatabaseCo
     db.run(query).map(_ > 0)
   }
 
+  override def findByCategory(category: String): Future[Seq[Product]] = {
+    db.run(products.filter(_.category === Category.fromString(category)).result)
+  }
 }
 
 case class ProductFilter(

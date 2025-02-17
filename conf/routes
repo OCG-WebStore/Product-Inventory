@@ -5,5 +5,8 @@ GET     /admin/products          controllers.AdminProductController.list()
 PUT     /admin/products/:id      controllers.AdminProductController.update(id: Long)
 DELETE  /admin/products/:id      controllers.AdminProductController.delete(id: Long)
 
+# GraphQL API
+POST    /api/products            controllers.GraphQLProductController.products
+
 # Admin healthcheck endpoint
 GET     /admin/ping              controllers.AdminProductController.ping()

@@ -28,27 +28,23 @@ object Category {
     val stringValue = "other"
   }
 
-  def fromString(s: String): Option[Category] = s.toLowerCase match {
-    case Hoodies.stringValue => Some(Hoodies)
-    case TShirts.stringValue => Some(TShirts)
-    case Trousers.stringValue => Some(Trousers)
-    case Gloves.stringValue => Some(Gloves)
-    case Other.stringValue => Some(Other)
-    case _ => None
+  def fromString(s: String): Category = s.toLowerCase match {
+    case Hoodies.stringValue => Hoodies
+    case TShirts.stringValue => TShirts
+    case Trousers.stringValue => Trousers
+    case Gloves.stringValue => Gloves
+    case _ => Other
   }
 
   implicit val categoryColumnType: BaseColumnType[Category] =
     MappedColumnType.base[Category, String](
       _.stringValue,
-      fromString(_).getOrElse(Other)
+      fromString
     )
 
   implicit val categoryFormat: Format[Category] = new Format[Category] {
     def reads(json: JsValue): JsResult[Category] = json.validate[String].flatMap { s =>
-      fromString(s) match {
-        case Some(category) => JsSuccess(category)
-        case None => JsError(s"Unknown category: $s")
-      }
+      JsSuccess(fromString(s))
     }
 
     def writes(category: Category): JsValue = JsString(category.stringValue)
