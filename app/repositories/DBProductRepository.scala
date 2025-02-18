@@ -11,7 +11,7 @@ import java.time.Instant
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class ProductRepositoryImpl @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext)
+class DBProductRepository @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext)
   extends ProductRepository {
 
   private class Products(tag: Tag) extends Table[Product](tag, "products") {
@@ -45,14 +45,7 @@ class ProductRepositoryImpl @Inject()(protected val dbConfigProvider: DatabaseCo
   override def findById(id: Long): Future[Option[Product]] =
     db.run(products.filter(_.id === id).result.headOption)
 
-  override def search(filter: ProductFilter = ProductFilter(None, None)): Future[Seq[Product]] = {
-    val query = products
-      .filterOpt(filter.minPrice)(_.price >= _)
-      .filterOpt(filter.maxPrice)(_.price <= _)
-    db.run(query.result)
-  }
-
-  override def findAll(): Future[Seq[Product]] = search()
+  override def findAll(): Future[Seq[Product]] = db.run(products.result)
 
 
   override def update(id: Long, command: UpdateProductCommand): Future[Option[Product]] = {
