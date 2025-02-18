@@ -12,6 +12,7 @@ play                = "2.8.19"
 playSlick           = "5.0.2"
 postgres            = "42.5.4"
 slick               = "3.3.3"
+redis               = "1.9.0"
 scala               = "2.13.9"
 scalaTest           = "3.2.15"
 scalaTestJUnit      = "3.2.2.0"
@@ -56,6 +57,7 @@ playSlickEvo    = { module = "com.typesafe.play:play-slick-evolutions_2.13"     
 postgres        = { module = "org.postgresql:postgresql"                        , version.ref = "postgres"          }
 slick           = { module = "com.typesafe.slick:slick_2.13"                    , version.ref = "slick"             }
 slickHikariCp   = { module = "com.typesafe.slick:slick-hikaricp_2.13"           , version.ref = "slick"             }
+redis           = { module = "com.github.etaty:rediscala_2.13"                  , version.ref = "redis"             }
 
 # Scala
 scala           = { module = "org.scala-lang:scala-library"                     , version.ref = "scala"             }
@@ -84,7 +86,8 @@ play = [
 db = [
     "slick",
     "slickHikariCp",
-    "postgres"
+    "postgres",
+    "redis"
 ]
 
 others = [
