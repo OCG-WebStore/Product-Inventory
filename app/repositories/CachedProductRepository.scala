@@ -4,7 +4,6 @@ import controllers.commands.{CreateProductCommand, UpdateProductCommand}
 
 import javax.inject.{Inject, Named, Singleton}
 import models.{Category, Product}
-import play.api.libs.json.{JsError, JsSuccess, Json}
 import services.RedisService
 
 import scala.concurrent.{ExecutionContext, Future}

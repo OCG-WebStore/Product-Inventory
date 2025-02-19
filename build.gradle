@@ -49,6 +49,10 @@ tasks.withType(ScalaCompile).configureEach {
     ]
 }
 
+tasks.withType(CopySpec).configureEach {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 tasks.withType(Tar).configureEach {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
@@ -57,10 +61,21 @@ tasks.withType(Zip).configureEach {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
+buildDir = 'build'
+
 sourceSets {
     main {
         scala {
             srcDir('$rootDir/app')
         }
+    }
+}
+
+tasks.withType(Jar).configureEach {
+    manifest {
+        attributes(
+                'Class-Path': configurations.runtimeClasspath.files.collect { it.getName() }.join(' '),
+                'Main-Class': "play.core.server.ProdServerStart"
+        )
     }
 }
