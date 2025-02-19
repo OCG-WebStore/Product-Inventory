@@ -2,8 +2,17 @@
 
 services:
     product-inventory:
-        build: .
+        build:
+            context: ..
+            dockerfile: ./docker/Dockerfile
+        image: product-inventory:latest
         container_name: product-inventory
+        healthcheck:
+            test: ["CMD", "./product-inventory-scripts/healthcheck.sh"]
+            interval: 15s
+            timeout: 5s
+            retries: 5
+            start_period: 30s
         environment:
             - DB_URL=jdbc:postgresql://postgres:5432/ocg
             - REDIS_HOST=redis
