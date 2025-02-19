@@ -20,9 +20,9 @@ class RedisService @Inject() (
                              )(implicit ec: ExecutionContext) extends Logging {
 
   val client: RedisClient = RedisClient(
-    host      = config.getOptional[String]("host").getOrElse("localhost"),
-    port      = config.getOptional[Int]   ("port").getOrElse(6379),
-    password  = Some(config.get[String]   ("password"))
+    host      = config.getOptional[String]  ("redis.host").getOrElse("localhost"),
+    port      = config.getOptional[Int]     ("redis.port").getOrElse(6379),
+    password  = Option(config.get[String]   ("redis.password"))
   )
 
   val ttl: Int = config.getOptional[Int]("ttl").getOrElse(36000)
