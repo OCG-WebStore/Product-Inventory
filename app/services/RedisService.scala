@@ -9,23 +9,24 @@ import scala.concurrent.{ExecutionContext, Future}
 import play.api.Logging
 import play.api.libs.json.{Json, Reads, Writes}
 import redis.RedisClient
+import utils.OCGConfiguration
 
 import java.io.IOException
 import java.net.SocketException
 
 @Singleton
 class RedisService @Inject() (
-                               config: Configuration,
+                               config: OCGConfiguration,
                                implicit val system: ActorSystem
                              )(implicit ec: ExecutionContext) extends Logging {
 
   val client: RedisClient = RedisClient(
-    host      = config.getOptional[String]  ("redis.host").getOrElse("localhost"),
-    port      = config.getOptional[Int]     ("redis.port").getOrElse(6379),
-    password  = Option(config.get[String]   ("redis.password"))
+    host      = config.Redis.host,
+    port      = config.Redis.port,
+    password  = config.Redis.password
   )
 
-  val ttl: Int = config.getOptional[Int]("ttl").getOrElse(36000)
+  final private val ttl: Int = config.Redis.ttl
 
   private def productKey(id: Long): String              = s"product:$id"
   private def categoryKey(category: Category): String   = s"products:category:${category.stringValue}"

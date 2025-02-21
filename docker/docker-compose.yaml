@@ -15,9 +15,11 @@ services:
             start_period: 30s
         environment:
             - DB_URL=jdbc:postgresql://postgres:5432/ocg
+            - DB_USER=ocg
+            - DB_PASSWORD=ocgsecret
             - REDIS_HOST=redis
-#            - REDIS_PORT=6379
-#            - REDIS_PASSWORD=ocgsecret
+            - REDIS_PORT=6379
+            - REDIS_PASSWORD=ocgsecret
 #            - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
         ports:
             - "9000:9000"
