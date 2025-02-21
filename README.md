@@ -19,7 +19,7 @@
 
 ### Security
 - [ ] JWT validation through API Gateway
-- [ ] Admin role enforcement
+- [X] Admin and User role enforcement
 - [ ] Secure image uploads (pre-signed S3 URLs)
 - [ ] Audit logging
 - [ ] Request signing
@@ -35,7 +35,6 @@
 - [x] Docker containerization
 - [ ] Kubernetes deployment
 - [ ] Auto-scaling
-- [ ] Multi-region support
 
 ## Service Integrations Diagram
 ![Service Integrations Diagram should appear here](https://github.com/OCG-WebStore/Product-Inventory/blob/master/.github/Integrations.png?raw=true)
