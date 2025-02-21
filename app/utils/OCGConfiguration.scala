@@ -6,9 +6,7 @@ import javax.inject.{Inject, Singleton}
 
 
 @Singleton
-class OCGConfiguration @Inject()(
-                                 config: Configuration
-                                 ){
+class OCGConfiguration @Inject()(config: Configuration) {
 
   object Redis {
     final val host          = config.getOptional[String]      ("redis.host")                   .getOrElse("localhost")
@@ -30,13 +28,6 @@ class OCGConfiguration @Inject()(
 
     object Http {
       final val secretKey   = config.getOptional[String]      ("play.http.secret.key")        .getOrElse("")
-    }
-  }
-
-  object App {
-
-    object Security {
-      final val hmacSecret  = config.getOptional[String]      ("app.security.hmac.secret")    .getOrElse("")
     }
   }
 }

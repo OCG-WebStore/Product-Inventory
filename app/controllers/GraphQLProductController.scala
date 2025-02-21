@@ -1,24 +1,27 @@
 package controllers
 
-import com.google.inject.Inject
 import graphql.ProductSchema
 import play.api.libs.json.{JsObject, JsString, JsValue, Json}
 import play.api.mvc.{AbstractController, Action, ControllerComponents}
-import repositories.ProductRepository
 import sangria.execution.{ErrorWithResolver, Executor, QueryAnalysisError}
 import sangria.parser.QueryParser
 import sangria.marshalling.playJson._
+import security.SecureAction
+import security.filters.CustomerFilter
+import services.ProductService
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
 class GraphQLProductController @Inject()(
                                           cc: ControllerComponents,
-                                          productRepository: ProductRepository)
-                                        (implicit ec: ExecutionContext)
+                                          productService: ProductService,
+                                          secureAction: SecureAction
+                                        )(implicit ec: ExecutionContext)
   extends AbstractController(cc){
 
-  def products: Action[JsValue] = Action.async(parse.json) { request =>
+  def products: Action[JsValue] = secureAction.customerAuth.async(parse.json) { request =>
     val query = (request.body \ "query").as[String]
     val operation = (request.body \ "operationName").asOpt[String]
     val variables = (request.body \ "variables").toOption.flatMap {
@@ -32,7 +35,7 @@ class GraphQLProductController @Inject()(
         Executor.execute(
           ProductSchema.schema,
           value,
-          productRepository,
+          productService,
           operation,
           variables = variables.getOrElse(JsObject.empty),
           operationName = operation

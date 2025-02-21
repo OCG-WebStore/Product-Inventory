@@ -15,6 +15,8 @@ class ProductServiceImpl @Inject() (repository: ProductRepository) extends Produ
   override def getProduct(id: Long): Future[Option[Product]] =
     repository.findById(id)
 
+  override def getByCategory(category: String): Future[Seq[Product]] = repository.findByCategory(category)
+
   override def getAllProducts: Future[Seq[Product]] = repository.findAll()
 
   override def updateProduct(id: Long, productCommand: UpdateProductCommand): Future[Option[Product]] =
@@ -22,4 +24,5 @@ class ProductServiceImpl @Inject() (repository: ProductRepository) extends Produ
 
   override def deleteProduct(id: Long): Future[Boolean] =
     repository.delete(id)
+
 }

@@ -1,7 +1,7 @@
 package graphql
 
 import models.{Category, Product}
-import repositories.ProductRepository
+import services.ProductService
 import sangria.schema.{fields, _}
 
 
@@ -46,21 +46,21 @@ object ProductSchema {
     )
   )
 
-  val QueryType: ObjectType[ProductRepository, Any] = ObjectType(
+  val QueryType: ObjectType[ProductService, Any] = ObjectType(
     "Query",
-    fields = fields[ProductRepository, Any](
+    fields = fields[ProductService, Any](
       Field(
         "allProducts",
         ListType(ProductType),
         description = Some("Returns a list of products matching criteria."),
-        resolve = c => c.ctx.findAll()
+        resolve = c => c.ctx.getAllProducts
       ),
       Field(
         "productById",
         OptionType(ProductType),
         description = Some("Returns a product by id."),
         arguments = Argument("id", LongType) :: Nil,
-        resolve = c => c.ctx.findById(c.arg("id"))
+        resolve = c => c.ctx.getProduct(c.arg("id"))
 
       ),
       Field(
@@ -68,13 +68,13 @@ object ProductSchema {
         ListType(ProductType),
         description = Some("Returns a list of products by category."),
         arguments = Argument("category", StringType) :: Nil,
-        resolve = c => c.ctx.findByCategory(c.arg("category"))
+        resolve = c => c.ctx.getByCategory(c.arg("category"))
       ),
     )
   )
 
 
-  val schema: Schema[ProductRepository, Any] = Schema(
+  val schema: Schema[ProductService, Any] = Schema(
     query = QueryType,
     additionalTypes = List(InstantType, LongType)
   )
