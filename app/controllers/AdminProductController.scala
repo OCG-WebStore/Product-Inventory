@@ -19,13 +19,13 @@ class AdminProductController @Inject()(
                                  )(implicit ec: ExecutionContext)
   extends BaseController with Logging {
 
-  def list(): Action[AnyContent] = secureActions.adminAuth.async { implicit _ =>
+  def list(): Action[AnyContent] = secureActions.adminAuth.async { implicit request =>
     productService.getAllProducts.map { products =>
       Ok(Json.toJson(products))
     }
   }
 
-  def get(id: Long): Action[AnyContent] = secureActions.adminAuth.async { implicit _ =>
+  def get(id: Long): Action[AnyContent] = secureActions.adminAuth.async { implicit request =>
     productService.getProduct(id).map {
       case Some(product) => Ok(Json.toJson(product))
       case None => NotFound(Json.toJson(ProductNotFound(id)))
@@ -53,7 +53,7 @@ class AdminProductController @Inject()(
     }
   }
 
-  def delete(id: Long): Action[AnyContent] = secureActions.adminAuth.async { implicit _ =>
+  def delete(id: Long): Action[AnyContent] = secureActions.adminAuth.async { implicit request =>
     productService.deleteProduct(id).map {
       case true => NoContent
       case false => NotFound(Json.toJson(ProductNotFound(id)))
@@ -61,7 +61,7 @@ class AdminProductController @Inject()(
   }
 
   def ping(): Action[AnyContent] = Action.async {
-    implicit _ =>
+    implicit request =>
       Future.successful(Ok)
   }
 }
