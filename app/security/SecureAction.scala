@@ -9,6 +9,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
+
 @Singleton
 class SecureAction @Inject()(
                               config: OCGConfiguration,
@@ -20,9 +21,6 @@ class SecureAction @Inject()(
 
   override protected def executionContext: ExecutionContext = ec
   override def parser: BodyParser[AnyContent] = parser
-
-  def adminAuth: ActionBuilder[UserRequest, AnyContent] = this.andThen(AdminFilter)
-  def customerAuth: ActionBuilder[UserRequest, AnyContent] = this.andThen(CustomerFilter)
 
 
   override def invokeBlock[A](request: Request[A], block: UserRequest[A] => Future[Result]): Future[Result] = {
@@ -76,4 +74,10 @@ class SecureAction @Inject()(
 
   def isValidTimestamp(userCtx: UserContext): Boolean =
     System.currentTimeMillis() - userCtx.timestamp < userCtx.expiresAt
+}
+
+@Singleton
+class SecureActions @Inject()(secureAction: SecureAction) {
+  def adminAuth: ActionBuilder[UserRequest, AnyContent] = secureAction.andThen(AdminFilter)
+  def customerAuth: ActionBuilder[UserRequest, AnyContent] = secureAction.andThen(CustomerFilter)
 }

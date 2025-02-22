@@ -6,8 +6,8 @@ import play.api.mvc.{AbstractController, Action, ControllerComponents}
 import sangria.execution.{ErrorWithResolver, Executor, QueryAnalysisError}
 import sangria.parser.QueryParser
 import sangria.marshalling.playJson._
-import security.SecureAction
-import security.filters.CustomerFilter
+import security.SecureActions
+
 import services.ProductService
 
 import javax.inject.Inject
@@ -17,11 +17,11 @@ import scala.util.{Failure, Success}
 class GraphQLProductController @Inject()(
                                           cc: ControllerComponents,
                                           productService: ProductService,
-                                          secureAction: SecureAction
+                                          secureActions: SecureActions
                                         )(implicit ec: ExecutionContext)
   extends AbstractController(cc){
 
-  def products: Action[JsValue] = secureAction.customerAuth.async(parse.json) { request =>
+  def products: Action[JsValue] = secureActions.customerAuth.async(parse.json) { request =>
     val query = (request.body \ "query").as[String]
     val operation = (request.body \ "operationName").asOpt[String]
     val variables = (request.body \ "variables").toOption.flatMap {

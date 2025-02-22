@@ -6,7 +6,7 @@ import models.errors.{InvalidProduct, ProductNotFound}
 import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc._
-import security.SecureAction
+import security.SecureActions
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -15,24 +15,24 @@ import scala.concurrent.{ExecutionContext, Future}
 class AdminProductController @Inject()(
                                    val controllerComponents: ControllerComponents,
                                    productService: ProductService,
-                                   secureAction: SecureAction
+                                   secureActions: SecureActions
                                  )(implicit ec: ExecutionContext)
   extends BaseController with Logging {
 
-  def list(): Action[AnyContent] = secureAction.adminAuth.async { implicit request =>
+  def list(): Action[AnyContent] = secureActions.adminAuth.async { implicit _ =>
     productService.getAllProducts.map { products =>
       Ok(Json.toJson(products))
     }
   }
 
-  def get(id: Long): Action[AnyContent] = secureAction.adminAuth.async { implicit request =>
+  def get(id: Long): Action[AnyContent] = secureActions.adminAuth.async { implicit _ =>
     productService.getProduct(id).map {
       case Some(product) => Ok(Json.toJson(product))
       case None => NotFound(Json.toJson(ProductNotFound(id)))
     }
   }
 
-  def create(): Action[CreateProductCommand] = secureAction.adminAuth.async(parse.json[CreateProductCommand]) { implicit request =>
+  def create(): Action[CreateProductCommand] = secureActions.adminAuth.async(parse.json[CreateProductCommand]) { implicit request =>
     val createCommand = request.body
 
     productService.createProduct(createCommand).map { createdProduct =>
@@ -42,7 +42,7 @@ class AdminProductController @Inject()(
     }
   }
 
-  def update(id: Long): Action[UpdateProductCommand] = secureAction.adminAuth.async(parse.json[UpdateProductCommand]) { implicit request =>
+  def update(id: Long): Action[UpdateProductCommand] = secureActions.adminAuth.async(parse.json[UpdateProductCommand]) { implicit request =>
     val updateCommand = request.body
 
     productService.updateProduct(id, updateCommand).map {
@@ -53,7 +53,7 @@ class AdminProductController @Inject()(
     }
   }
 
-  def delete(id: Long): Action[AnyContent] = secureAction.adminAuth.async { implicit request =>
+  def delete(id: Long): Action[AnyContent] = secureActions.adminAuth.async { implicit _ =>
     productService.deleteProduct(id).map {
       case true => NoContent
       case false => NotFound(Json.toJson(ProductNotFound(id)))
@@ -61,7 +61,7 @@ class AdminProductController @Inject()(
   }
 
   def ping(): Action[AnyContent] = Action.async {
-    implicit request =>
+    implicit _ =>
       Future.successful(Ok)
   }
 }
