@@ -37,4 +37,4 @@
 - [ ] Auto-scaling
 
 ## Service Integrations Diagram
-![Service Integrations Diagram should appear here](https://github.com/OCG-WebStore/Product-Inventory/blob/master/.github/Integrations.png?raw=true)
+![Service Integrations Diagram should appear here](https://github.com/OCG-WebStore/Product-Inventory/blob/master/files/Integrations.png?raw=true)
