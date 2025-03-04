@@ -5,9 +5,10 @@ import models.{Category, Product}
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 import slick.jdbc.PostgresProfile.api._
-import scala.concurrent.{ExecutionContext, Future}
 
+import scala.concurrent.{ExecutionContext, Future}
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 import javax.inject.{Inject, Singleton}
 
 @Singleton
@@ -69,7 +70,7 @@ class DBProductRepository @Inject()(protected val dbConfigProvider: DatabaseConf
               command.price.getOrElse(product.price),
               command.category.getOrElse(product.category),
               command.imageKey.getOrElse(product.imageKey),
-              Instant.now()
+              Instant.now().truncatedTo(ChronoUnit.MILLIS)
             )).flatMap(_ => products.filter(_.id === id).result.headOption)
         case None => DBIO.successful(None)
       }
@@ -88,8 +89,3 @@ class DBProductRepository @Inject()(protected val dbConfigProvider: DatabaseConf
     db.run(products.filter(_.category === Category.fromString(category)).result)
   }
 }
-
-case class ProductFilter(
-                        minPrice: Option[Long] = None,
-                        maxPrice: Option[Long] = None
-                        )

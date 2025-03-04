@@ -1,11 +1,11 @@
 [versions]
 
-awsSdk              = "2.20.135"
+#awsSdk              = "2.20.135"
 graphQL             = "2.1.3"
 graphQLPlay         = "2.0.1"
 guava               = "32.0.1-jre"
-jwtPlay             = "4.3.0"
-kafka               = "3.4.0"
+#jwtPlay             = "4.3.0"
+#kafka               = "3.4.0"
 logback             = "1.2.11"
 logbackEnc          = "7.4"
 play                = "2.8.19"
@@ -14,9 +14,13 @@ postgres            = "42.5.4"
 slick               = "3.3.3"
 redis               = "1.9.0"
 scala               = "2.13.9"
+
 scalaTest           = "3.2.15"
-scalaTestJUnit      = "3.2.2.0"
+scalaTestJunit      = "3.2.15.0"
 scalaXml            = "1.2.0"
+mockito             = "3.2.18.0"
+scalaTestPlay       = "5.0.0"
+h2                  = "2.2.224"
 
 gradlePlayPlugin    = "0.14"
 
@@ -25,7 +29,7 @@ gradlePlayPlugin    = "0.14"
 [libraries]
 
 # AWS SDK (S3)
-awsSdk          = { module = "software.amazon.awssdk:s3"                        , version.ref = "awsSdk"            }
+#awsSdk          = { module = "software.amazon.awssdk:s3"                        , version.ref = "awsSdk"            }
 
 # GraphQL
 graphQL         = { module = "org.sangria-graphql:sangria_2.13"                 , version.ref = "graphQL"           }
@@ -35,10 +39,10 @@ graphQLPlay     = { module = "org.sangria-graphql:sangria-play-json_2.13"       
 guava           = { module = "com.google.guava:guava"                           , version.ref = "guava"             }
 
 # Security (JWT)
-jwtPlay         = { module = "com.pauldijou:jwt-play_2.13"                      , version.ref = "jwtPlay"           }
+#jwtPlay         = { module = "com.pauldijou:jwt-play_2.13"                      , version.ref = "jwtPlay"           }
 
 # Kafka
-kafka           = { module = "org.apache.kafka:kafka-clients"                   , version.ref = "kafka"             }
+#kafka           = { module = "org.apache.kafka:kafka-clients"                   , version.ref = "kafka"             }
 
 # Logback
 logback         = { module = "ch.qos.logback:logback-classic"                   , version.ref = "logback"           }
@@ -62,11 +66,12 @@ redis           = { module = "com.github.etaty:rediscala_2.13"                  
 # Scala
 scala           = { module = "org.scala-lang:scala-library"                     , version.ref = "scala"             }
 
-# ScalaTest
+# Test
 scalaTest       = { module = "org.scalatest:scalatest_2.13"                     , version.ref = "scalaTest"         }
-scalaTestJUnit  = { module = "org.scalatestplus:junit-4-13_2.13"                , version.ref = "scalaTestJUnit"    }
-
-# ScalaXml
+scalaJUnit      = { module = "org.scalatestplus:junit-4-13_2.13"                , version.ref = "scalaTestJunit"    }
+mockito         = { module = "org.scalatestplus:mockito-4-11_2.13"              , version.ref = "mockito"           }
+scalaTestPlay   = { module = "org.scalatestplus.play:scalatestplus-play_2.13"   , version.ref = "scalaTestPlay"     }
+h2db            = { module = "com.h2database:h2"                                , version.ref = "h2"                }
 scalaXml        = { module = "org.scala-lang.modules:scala-xml_2.13"            , version.ref = "scalaXml"          }
 
 ########################################################################################################################
@@ -91,19 +96,23 @@ db = [
 ]
 
 others = [
-    "awsSdk",
+    "scala",
+#    "awsSdk",
     "graphQL",
     "graphQLPlay",
     "guava",
-    "jwtPlay",
-    "kafka",
+#    "jwtPlay",
+#    "kafka",
     "logback",
     "logbackEnc"
 ]
 
 scalaTest = [
     "scalaTest",
-    "scalaTestJUnit"
+    "scalaJUnit",
+    "mockito",
+    "scalaTestPlay",
+    "h2db"
 ]
 
 ########################################################################################################################
