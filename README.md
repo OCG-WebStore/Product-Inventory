@@ -2,8 +2,8 @@
 
 [![Scala Version](https://img.shields.io/badge/Scala-2.13-red.svg)](https://www.scala-lang.org/)
 [![Play Framework](https://img.shields.io/badge/Play_Framework-3.3.3-blue.svg)](https://playframework.com/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) <br>
+[![codecov](https://codecov.io/gh/OCG-WebStore/Product-Inventory/graph/badge.svg?token=Q74C4E0VZD)](https://codecov.io/gh/OCG-WebStore/Product-Inventory)
 #### Core component of the OCG WebStore high-end fashion platform. Handles product catalog management with real-time inventory updates.
 
 ## 📋 Features Checklist

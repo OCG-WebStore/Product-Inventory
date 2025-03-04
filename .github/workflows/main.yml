@@ -1,16 +1,18 @@
-name: Product-Inventory
+name: PI-Build
 
 on:
   push:
     branches:
       - master
+      - feature/*
+      - bugfixing/*
   pull_request:
     branches:
       - master
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout code
@@ -23,7 +25,4 @@ jobs:
           distribution: 'temurin'
 
       - name: Build (Gradle)
-        run: ./gradlew build -x test
-
-      - name: Run tests
-        run: ./gradlew test
+        run: ./gradlew build
