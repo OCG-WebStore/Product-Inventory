@@ -90,7 +90,8 @@ jacocoTestReport {
             fileTree(dir: it, exclude: [
                     '**/routes/**',
                     '**/generated/**',
-                    '**/*Reverse*.*'
+                    '**/*Reverse*.*',
+                    '**/graphql/**'
             ])
         }))
     }
