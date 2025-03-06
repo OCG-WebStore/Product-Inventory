@@ -14,11 +14,9 @@
 - [x] Redis caching layer
 - [ ] Kafka event streaming
 - [ ] Circuit Breaker pattern
-- [ ] Rate limiting
 - [ ] Bulk import/export
 
 ### Security
-- [ ] JWT validation through API Gateway
 - [X] Admin and User role enforcement
 - [ ] Secure image uploads (pre-signed S3 URLs)
 - [ ] Audit logging
