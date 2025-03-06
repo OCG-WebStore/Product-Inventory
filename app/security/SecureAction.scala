@@ -77,7 +77,7 @@ class SecureAction @Inject()(
 }
 
 @Singleton
-class SecureActions @Inject()(secureAction: SecureAction) {
+class SecureActions @Inject()(secureAction: ActionBuilder[UserRequest, AnyContent]) {
   def adminAuth: ActionBuilder[UserRequest, AnyContent] = secureAction.andThen(AdminFilter)
   def customerAuth: ActionBuilder[UserRequest, AnyContent] = secureAction.andThen(CustomerFilter)
 }

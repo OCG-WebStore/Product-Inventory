@@ -1,8 +1,9 @@
+package repositories
+
 import com.typesafe.config.ConfigFactory
 import controllers.commands.{CreateProductCommand, UpdateProductCommand}
 import models.Category.Other
 import models.{Category, Product}
-import modules.TestModule
 import org.junit.runner.RunWith
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
@@ -10,10 +11,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.time.{Seconds, Span}
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.junit.JUnitRunner
-import play.api.{Configuration, Environment}
 import play.api.db.slick.DatabaseConfigProvider
-import play.api.inject.guice.GuiceApplicationBuilder
-import repositories.DBProductRepository
 import slick.basic.{BasicProfile, DatabaseConfig}
 import slick.jdbc.JdbcProfile
 import slick.jdbc.PostgresProfile.api._
