@@ -1,7 +1,9 @@
 package modules
 
 import com.google.inject.{AbstractModule, Provides}
+import play.api.mvc.{ActionBuilder, AnyContent}
 import repositories.{CachedProductRepository, DBProductRepository, ProductRepository}
+import security.{SecureAction, UserRequest}
 import services.{ProductService, ProductServiceImpl}
 
 import javax.inject.Named
@@ -22,6 +24,10 @@ class ProductModule extends AbstractModule {
 
     bind(classOf[ProductService])
       .to(classOf[ProductServiceImpl])
+      .asEagerSingleton()
+
+    bind(classOf[ActionBuilder[UserRequest, AnyContent]])
+      .to(classOf[SecureAction])
       .asEagerSingleton()
   }
 }
