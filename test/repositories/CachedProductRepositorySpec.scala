@@ -199,5 +199,80 @@ class CachedProductRepositorySpec extends AnyWordSpec
 
       result must contain theSameElementsAs dbProducts
     }
+
+    "update product with category change" in {
+      val productId = 123L
+      val oldProduct = testProduct.copy(id = Some(productId))
+      val updatedProduct = oldProduct.copy(category = Category.fromString("NewCategory"))
+
+      when(productRepository.findById(eqTo(productId))) thenReturn Future.successful(Some(oldProduct))
+      when(productRepository.update(eqTo(productId), eqTo(testUpdateCommand.copy(category = Some(updatedProduct.category))))) thenReturn Future.successful(Some(updatedProduct))
+      when(redisService.cacheProduct(eqTo(updatedProduct))) thenReturn Future.successful(true)
+      when(redisService.getCachedCategoryIds(eqTo(oldProduct.category.stringValue))) thenReturn Future.successful(Seq(productId))
+      when(redisService.cacheCategory(eqTo(oldProduct.category), eqTo(Seq()))) thenReturn Future.successful(true)
+      when(redisService.getCachedCategoryIds(eqTo(updatedProduct.category.stringValue))) thenReturn Future.successful(Seq.empty)
+      when(redisService.cacheCategory(eqTo(updatedProduct.category), eqTo(Seq(productId)))) thenReturn Future.successful(true)
+
+      val result = cachedProductRepository.update(productId, testUpdateCommand.copy(category = Some(updatedProduct.category))).futureValue
+
+      result mustBe Some(updatedProduct)
+    }
+
+    "update product without category change" in {
+      val productId = 123L
+      val oldProduct = testProduct.copy(id = Some(productId))
+      val updatedProduct = oldProduct.copy(name = oldProduct.name + "_updated")
+
+      when(productRepository.findById(eqTo(productId))) thenReturn Future.successful(Some(oldProduct))
+      when(productRepository.update(eqTo(productId), eqTo(testUpdateCommand.copy(name = Some(updatedProduct.name))))) thenReturn Future.successful(Some(updatedProduct))
+      when(redisService.cacheProduct(eqTo(updatedProduct))) thenReturn Future.successful(true)
+
+      val result = cachedProductRepository.update(productId, testUpdateCommand.copy(name = Some(updatedProduct.name))).futureValue
+
+      result mustBe Some(updatedProduct)
+    }
+
+    "delete product and update category cache when product exists in category" in {
+      val productId = 123L
+      val product = testProduct.copy(id = Some(productId))
+
+      when(productRepository.findById(eqTo(productId))) thenReturn Future.successful(Some(product))
+      when(redisService.getCachedCategoryIds(eqTo(product.category.stringValue))) thenReturn Future.successful(Seq(productId))
+      when(redisService.cacheCategory(eqTo(product.category), eqTo(Seq()))) thenReturn Future.successful(true)
+      when(redisService.getCachedProductIds) thenReturn Future.successful(Seq(productId))
+      when(redisService.cacheAllProductsIds(Seq())) thenReturn Future.successful(true)
+      when(redisService.removeProductCache(eqTo(productId))) thenReturn Future.successful(productId)
+      when(productRepository.delete(eqTo(productId))) thenReturn Future.successful(true)
+
+      val result = cachedProductRepository.delete(productId).futureValue
+
+      result mustBe true
+    }
+
+    "delete product when product does not exist in category" in {
+      val productId = 123L
+      val product = testProduct.copy(id = Some(productId))
+
+      when(productRepository.findById(eqTo(productId))) thenReturn Future.successful(Some(product))
+      when(redisService.getCachedCategoryIds(eqTo(product.category.stringValue))) thenReturn Future.successful(Seq.empty)
+      when(redisService.getCachedProductIds) thenReturn Future.successful(Seq(productId))
+      when(redisService.cacheAllProductsIds(Seq())) thenReturn Future.successful(true)
+      when(redisService.removeProductCache(eqTo(productId))) thenReturn Future.successful(productId)
+      when(productRepository.delete(eqTo(productId))) thenReturn Future.successful(true)
+
+      val result = cachedProductRepository.delete(productId).futureValue
+
+      result mustBe true
+    }
+
+    "find all products when no products are cached" in {
+      when(redisService.getCachedProductIds) thenReturn Future.successful(Seq.empty)
+      when(productRepository.findAll()) thenReturn Future.successful(Seq.empty)
+      when(redisService.cacheAllProductsIds(Seq.empty)) thenReturn Future.successful(true)
+
+      val result = cachedProductRepository.findAll().futureValue
+
+      result mustBe Seq.empty
+    }
   }
 }
