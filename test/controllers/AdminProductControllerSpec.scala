@@ -69,7 +69,7 @@ class AdminProductControllerSpec
     imageKey = Some(testProduct.imageKey + "_updated")
   )
 
-  val okActionBuilder: ActionBuilder[UserRequest, AnyContent] =
+  val passThroughActionBuilder: ActionBuilder[UserRequest, AnyContent] =
     new ActionBuilder[UserRequest, AnyContent] {
       override def parser: BodyParser[AnyContent] = parsers.anyContent
 
@@ -86,7 +86,7 @@ class AdminProductControllerSpec
   "AdminProductController" should {
 
         "list all products" in {
-            when(mockSecureActions.adminAuth) thenReturn okActionBuilder
+            when(mockSecureActions.adminAuth) thenReturn passThroughActionBuilder
             when(mockProductService.getAllProducts).thenReturn(Future.successful(Seq.empty))
 
             val result: Future[Result] = controller.list().apply(FakeRequest(GET, "/admin/products"))
@@ -99,7 +99,7 @@ class AdminProductControllerSpec
             val productId = 1L
             val product = testProduct.copy(id = Some(productId))
 
-            when(mockSecureActions.adminAuth) thenReturn okActionBuilder
+            when(mockSecureActions.adminAuth) thenReturn passThroughActionBuilder
             when(mockProductService.getProduct(productId)).thenReturn(Future.successful(Some(product)))
 
             val result: Future[Result] = controller.get(productId).apply(FakeRequest(GET, s"/admin/products/$productId"))
@@ -113,7 +113,7 @@ class AdminProductControllerSpec
             val productId = 1L
             val createdProduct = testProduct.copy(id = Some(productId))
 
-            when(mockSecureActions.adminAuth) thenReturn okActionBuilder
+            when(mockSecureActions.adminAuth) thenReturn passThroughActionBuilder
             when(mockProductService
               .createProduct(any[CreateProductCommand]))
               .thenReturn(Future.successful(createdProduct))
@@ -142,7 +142,7 @@ class AdminProductControllerSpec
               updateCommand.category.get,
               updateCommand.imageKey.get)
 
-            when(mockSecureActions.adminAuth) thenReturn okActionBuilder
+            when(mockSecureActions.adminAuth) thenReturn passThroughActionBuilder
             when(mockProductService
               .updateProduct(productId, updateCommand))
               .thenReturn(Future.successful(Some(updatedProduct)))
@@ -163,7 +163,7 @@ class AdminProductControllerSpec
         "delete an existing product" in {
             val productId = 1L
 
-            when(mockSecureActions.adminAuth) thenReturn okActionBuilder
+            when(mockSecureActions.adminAuth) thenReturn passThroughActionBuilder
 
             when(mockProductService.deleteProduct(productId)).thenReturn(Future.successful(true))
 
