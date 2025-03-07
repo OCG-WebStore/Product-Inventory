@@ -13,14 +13,14 @@ import scala.util.{Failure, Success, Try}
 @Singleton
 class SecureAction @Inject()(
                               config: OCGConfiguration,
-                              parser: BodyParsers.Default,
+                              bodyParser: BodyParser[AnyContent],
                               crypto: Crypto
                             )(implicit ec: ExecutionContext)
 
   extends ActionBuilder[UserRequest, AnyContent] with Logging {
 
   override protected def executionContext: ExecutionContext = ec
-  override def parser: BodyParser[AnyContent] = parser
+  override def parser: BodyParser[AnyContent] = bodyParser
 
 
   override def invokeBlock[A](request: Request[A], block: UserRequest[A] => Future[Result]): Future[Result] = {
@@ -65,10 +65,34 @@ class SecureAction @Inject()(
       kv(0) -> kv(1)
     }.toMap
 
+    val userId: Option[Long] = Try(params("user_id").toLongOption) match {
+      case Success(value) => value match {
+        case Some(v: Long) => Some(v)
+        case _ => None
+      }
+      case Failure(_) => None
+    }
+
+    val roles = Try(params("roles").split(", ").map(Role.fromString).toSeq) match {
+      case Success(value) => value match {
+        case seq: Seq[Role] => seq
+        case _ => Seq.empty[Role]
+      }
+      case Failure(_) => Seq.empty[Role]
+    }
+
+    val expiresAt = Try(params("expiresAt").toLongOption) match {
+      case Success(value) => value match {
+        case Some(v) => v
+        case None => config.User.Context.expiresAt
+      }
+      case Failure(_) => config.User.Context.expiresAt
+    }
+
     UserContext(
-      userId = params("user_id").toLongOption,
-      roles = params("roles").split(",").map(Role.fromString).toSeq,
-      expiresAt = config.User.Context.expiresAt
+      userId = userId,
+      roles = roles,
+      expiresAt = expiresAt
     )
   }
 
