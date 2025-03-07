@@ -51,6 +51,7 @@ class RedisService @Inject() (
     val key = categoryKey(category)
     set(key, Json.toJson(ids).toString)
   }
+
   def getCachedCategoryIds(category: String): Future[Seq[Long]] = {
     get(categoryKey(Category.fromString(category))).map { idsStrOpt =>
       idsStrOpt

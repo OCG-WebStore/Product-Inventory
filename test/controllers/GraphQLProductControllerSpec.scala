@@ -59,10 +59,8 @@ class GraphQLProductControllerSpec
   "GraphQLProductController" should {
 
     "return all products for the allProducts query" in {
-      // Stub getAllProducts to return one dummy product.
       when(mockProductService.getAllProducts).thenReturn(Future.successful(Seq(testProduct)))
 
-      // Prepare a query that requests fields from allProducts.
       val query =
         """
           |{
