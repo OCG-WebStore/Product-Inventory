@@ -36,7 +36,7 @@ dependencies {
 }
 
 jacoco {
-    toolVersion = "0.8.11" // Latest as of 2025
+    toolVersion = "0.8.11"
 }
 
 configurations.configureEach {
