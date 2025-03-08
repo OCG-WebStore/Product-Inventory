@@ -62,7 +62,6 @@ class CategorySpec extends AnyWordSpec with Matchers {
     "have a valid Slick column type mapping" in {
       val columnType = Category.categoryColumnType
 
-      // Map from Category to String
       columnType.valueToSQLLiteral(Category.Hoodies) shouldBe "'hoodies'"
       columnType.valueToSQLLiteral(Category.TShirts) shouldBe "'t-shirts'"
       columnType.valueToSQLLiteral(Category.Trousers) shouldBe "'trousers'"
