@@ -13,7 +13,7 @@ import scala.util.{Failure, Success, Try}
 @Singleton
 class SecureAction @Inject()(
                               config: OCGConfiguration,
-                              bodyParser: BodyParser[AnyContent],
+                              bodyParser: BodyParsers.Default,
                               crypto: Crypto
                             )(implicit ec: ExecutionContext)
 
@@ -100,8 +100,7 @@ class SecureAction @Inject()(
     System.currentTimeMillis() - userCtx.timestamp < userCtx.expiresAt
 }
 
-@Singleton
-class SecureActions @Inject()(secureAction: ActionBuilder[UserRequest, AnyContent]) {
+class SecureActions @Inject()(secureAction: SecureAction) {
   def adminAuth: ActionBuilder[UserRequest, AnyContent] = secureAction.andThen(AdminFilter)
   def customerAuth: ActionBuilder[UserRequest, AnyContent] = secureAction.andThen(CustomerFilter)
 }

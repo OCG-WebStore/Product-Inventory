@@ -1,7 +1,7 @@
-name: PI-Test-Coverage
+name: PI-TestCoverageReport
 
 on:
-    pull_request:
+    push:
         branches:
             - master
 

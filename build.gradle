@@ -39,13 +39,6 @@ jacoco {
     toolVersion = "0.8.11"
 }
 
-configurations.configureEach {
-    resolutionStrategy {
-        force "com.typesafe.play:play_2.13:2.8.21"
-        force "org.scala-lang:scala-library:2.13.16"
-    }
-}
-
 play {
     platform {
         playVersion = project.playVersion
@@ -76,7 +69,6 @@ tasks.withType(Test).configureEach {
             '--add-opens', 'java.base/java.lang.reflect=ALL-UNNAMED'
     ]
     useJUnit()
-    finalizedBy jacocoTestReport
 }
 
 jacocoTestReport {
@@ -92,13 +84,13 @@ jacocoTestReport {
                     '**/router/**',
                     '**/generated/**',
                     '**/*Reverse*.*',
-                    '**/graphql/**'
+                    '**/graphql/**',
+                    '**/modules/**'
             ])
         }))
     }
 }
 
-// Ensure test task depends on compileTestScala
 test.dependsOn compileTestScala
 
 tasks.withType(CopySpec).configureEach {
