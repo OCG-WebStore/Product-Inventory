@@ -42,7 +42,8 @@ object ProductSchema {
       Field("category", CategoryType, resolve = _.value.category),
       Field("imageKey", StringType, resolve = _.value.imageKey),
       Field("customizable", BooleanType, resolve = _.value.customizable),
-      Field("createdAt", InstantType, resolve = _.value.createdAt)
+      Field("createdAt", InstantType, resolve = _.value.createdAt),
+      Field("updatedAt", InstantType, resolve = _.value.updatedAt)
     )
   )
 

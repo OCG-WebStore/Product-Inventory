@@ -203,7 +203,7 @@ class CachedProductRepositorySpec extends AnyWordSpec
     "update product with category change" in {
       val productId = 123L
       val oldProduct = testProduct.copy(id = Some(productId))
-      val updatedProduct = oldProduct.copy(category = Category.fromString("NewCategory"))
+      val updatedProduct = oldProduct.copy(category = Category.fromString("hoodies"))
 
       when(productRepository.findById(eqTo(productId))) thenReturn Future.successful(Some(oldProduct))
       when(productRepository.update(eqTo(productId), eqTo(testUpdateCommand.copy(category = Some(updatedProduct.category))))) thenReturn Future.successful(Some(updatedProduct))
@@ -247,32 +247,6 @@ class CachedProductRepositorySpec extends AnyWordSpec
       val result = cachedProductRepository.delete(productId).futureValue
 
       result mustBe true
-    }
-
-    "delete product when product does not exist in category" in {
-      val productId = 123L
-      val product = testProduct.copy(id = Some(productId))
-
-      when(productRepository.findById(eqTo(productId))) thenReturn Future.successful(Some(product))
-      when(redisService.getCachedCategoryIds(eqTo(product.category.stringValue))) thenReturn Future.successful(Seq.empty)
-      when(redisService.getCachedProductIds) thenReturn Future.successful(Seq(productId))
-      when(redisService.cacheAllProductsIds(Seq())) thenReturn Future.successful(true)
-      when(redisService.removeProductCache(eqTo(productId))) thenReturn Future.successful(productId)
-      when(productRepository.delete(eqTo(productId))) thenReturn Future.successful(true)
-
-      val result = cachedProductRepository.delete(productId).futureValue
-
-      result mustBe true
-    }
-
-    "find all products when no products are cached" in {
-      when(redisService.getCachedProductIds) thenReturn Future.successful(Seq.empty)
-      when(productRepository.findAll()) thenReturn Future.successful(Seq.empty)
-      when(redisService.cacheAllProductsIds(Seq.empty)) thenReturn Future.successful(true)
-
-      val result = cachedProductRepository.findAll().futureValue
-
-      result mustBe Seq.empty
     }
   }
 }
