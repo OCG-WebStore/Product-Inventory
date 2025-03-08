@@ -69,7 +69,6 @@ tasks.withType(Test).configureEach {
             '--add-opens', 'java.base/java.lang.reflect=ALL-UNNAMED'
     ]
     useJUnit()
-    finalizedBy jacocoTestReport
 }
 
 jacocoTestReport {
@@ -92,7 +91,6 @@ jacocoTestReport {
     }
 }
 
-// Ensure test task depends on compileTestScala
 test.dependsOn compileTestScala
 
 tasks.withType(CopySpec).configureEach {
