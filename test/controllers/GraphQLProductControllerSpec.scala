@@ -18,6 +18,8 @@ import org.mockito.Mockito.when
 import org.scalatestplus.junit.JUnitRunner
 import org.scalatestplus.mockito.MockitoSugar
 
+import java.time.Instant
+
 
 @RunWith(classOf[JUnitRunner])
 class GraphQLProductControllerSpec
@@ -52,8 +54,7 @@ class GraphQLProductControllerSpec
     price = 100L,
     category = Category.Other,
     imageKey = "test.jpg",
-    customizable = false,
-    createdAt = java.time.Instant.parse("2020-01-01T00:00:00Z")
+    createdAt = Instant.parse("2020-01-01T00:00:00Z")
   )
 
   "GraphQLProductController" should {

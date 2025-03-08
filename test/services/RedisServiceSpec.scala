@@ -69,7 +69,6 @@ class RedisServiceSpec extends AnyWordSpec
 
       when(mockClient.setex(key, configuration.Redis.ttl, jsonStr))
         .thenReturn(Future.failed(new Exception("Test exception")))
-      val action = service.cacheProduct(testProduct)
       service.cacheProduct(testProduct).futureValue shouldBe false
     }
 

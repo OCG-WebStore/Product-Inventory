@@ -3,7 +3,6 @@ package models
 import play.api.libs.json._
 
 import java.time.Instant
-import java.time.temporal.ChronoUnit
 
 
 case class Product(
@@ -14,11 +13,34 @@ case class Product(
                     category: Category,
                     imageKey: String,
                     customizable: Boolean = false,
-                    createdAt: Instant = Instant.now().truncatedTo(ChronoUnit.MILLIS),
-                    updatedAt: Instant = Instant.now().truncatedTo(ChronoUnit.MILLIS)
+                    createdAt: Instant = Instant.now(),
+                    updatedAt: Instant = Instant.now()
                   )
 
 object Product {
-  implicit val productFormat: Format[Product] =
-    Json.format[Product]
+
+  implicit val instantFormat: Format[Instant] = new Format[Instant] {
+    def reads(json: JsValue): JsResult[Instant] = json.validate[String].map(Instant.parse)
+    def writes(i: Instant): JsValue = JsString(i.toString)
+  }
+
+  implicit val productFormat: Format[Product] = {
+    import play.api.libs.functional.syntax._
+
+    val reads: Reads[Product] = (
+        (__ \ "id").readNullable[Long] and
+        (__ \ "name").read[String] and
+        (__ \ "description").read[String] and
+        (__ \ "price").read[Long] and
+        (__ \ "category").read[Category] and
+        (__ \ "imageKey").read[String] and
+        (__ \ "customizable").readWithDefault[Boolean](false) and
+        (__ \ "createdAt").readWithDefault[Instant](Instant.now()) and
+        (__ \ "updatedAt").readWithDefault[Instant](Instant.now())
+      )(Product.apply _)
+
+    val writes: OWrites[Product] = Json.writes[Product]
+
+    Format(reads, writes)
+  }
 }

@@ -29,6 +29,7 @@ type Product {
   imageKey: String!
   customizable: Boolean!
   createdAt: Instant!
+  updatedAt: Instant!
 }
 
 type Query {

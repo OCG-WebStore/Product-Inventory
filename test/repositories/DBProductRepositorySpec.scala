@@ -5,6 +5,7 @@ import controllers.commands.{CreateProductCommand, UpdateProductCommand}
 import models.Category.Other
 import models.{Category, Product}
 import org.junit.runner.RunWith
+import org.scalactic.Equality
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.matchers.should.Matchers
@@ -16,6 +17,7 @@ import slick.basic.{BasicProfile, DatabaseConfig}
 import slick.jdbc.JdbcProfile
 import slick.jdbc.PostgresProfile.api._
 
+import java.time.temporal.ChronoUnit
 import java.util.TimeZone
 import scala.concurrent.Await
 
@@ -80,6 +82,20 @@ class DBProductRepositorySpec extends AnyWordSpec
     imageKey = testProduct.imageKey
   )
 
+  implicit val productNamePriceEquality: Equality[Product] = (a: Product, b: Any) => b match {
+    case p: Product =>
+        a.id                                        == p.id &&
+        a.name                                      == p.name &&
+        a.description                               == p.description &&
+        a.price                                     == p.price &&
+        a.category                                  == p.category &&
+        a.imageKey                                  == p.imageKey &&
+        a.customizable                              == p.customizable &&
+        a.createdAt.truncatedTo(ChronoUnit.MILLIS)  == p.createdAt.truncatedTo(ChronoUnit.MILLIS) &&
+        a.updatedAt.truncatedTo(ChronoUnit.MILLIS)  == p.updatedAt.truncatedTo(ChronoUnit.MILLIS)
+    case _ => false
+  }
+
   "ProductRepository" should {
     "persist a new product" in {
       val created = repository.create(testCreateCommand).futureValue
@@ -107,6 +123,19 @@ class DBProductRepositorySpec extends AnyWordSpec
 
     "findAll" should {
       "return all products" in {
+        implicit val productNamePriceEquality: Equality[Product] = (a: Product, b: Any) => b match {
+          case p: Product =>
+            a.name  == p.name &&
+            a.price == p.price &&
+            a.id == p.id &&
+            a.category == p.category &&
+            a.description == p.description &&
+            a.imageKey == p.imageKey &&
+            a.createdAt.truncatedTo(ChronoUnit.MILLIS) == p.createdAt.truncatedTo(ChronoUnit.MILLIS) &&
+            a.updatedAt.truncatedTo(ChronoUnit.MILLIS) == p.updatedAt.truncatedTo(ChronoUnit.MILLIS)
+          case _ => false
+        }
+
         val p1 = repository.create(testCreateCommand).futureValue
         val p2 = repository.create(testCreateCommand).futureValue
 
