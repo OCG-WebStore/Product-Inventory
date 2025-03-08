@@ -1,10 +1,17 @@
-package security;
+package security
 
 import play.api.mvc._
+import utils.OCGConfiguration
+
 import scala.concurrent.{ExecutionContext, Future}
 
-class TestSecureAction(implicit val ec: ExecutionContext, cc: ControllerComponents)
-        extends ActionBuilder[UserRequest, AnyContent] {
+class TestSecureAction(
+                        config: OCGConfiguration,
+                        bodyParser: BodyParsers.Default,
+                        crypto: Crypto,
+                        cc: ControllerComponents
+                      )(implicit val ec: ExecutionContext)
+        extends SecureAction(config, bodyParser, crypto) {
 
   override def parser: BodyParser[AnyContent] = cc.parsers.anyContent
 
@@ -20,7 +27,12 @@ class TestSecureAction(implicit val ec: ExecutionContext, cc: ControllerComponen
   override protected def executionContext: ExecutionContext = ec
 }
 
-class TestSecureActions(implicit ec: ExecutionContext, cc: ControllerComponents)
-  extends SecureActions(new TestSecureAction()(ec, cc)) {
-    override def adminAuth: ActionBuilder[UserRequest, AnyContent] = new TestSecureAction()(ec, cc)
+class TestSecureActions(
+                         config: OCGConfiguration,
+                         bodyParser: BodyParsers.Default,
+                         crypto: Crypto,
+                         cc: ControllerComponents
+)(implicit val ec: ExecutionContext)
+  extends SecureActions(new TestSecureAction(config, bodyParser, crypto, cc)(ec)) {
+    override def adminAuth: ActionBuilder[UserRequest, AnyContent] = new TestSecureAction(config,bodyParser, crypto, cc)(ec)
 }

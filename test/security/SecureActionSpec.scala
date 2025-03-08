@@ -13,7 +13,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import play.api.Configuration
 import play.api.http.Status.{BAD_REQUEST, FORBIDDEN, OK}
 import play.api.mvc.Results.Ok
-import play.api.mvc.{AnyContent, BodyParser, ControllerComponents, Result, Results}
+import play.api.mvc.{AnyContent, BodyParser, BodyParsers, ControllerComponents, Result}
 import play.api.test.Helpers.{defaultAwaitTimeout, status}
 import play.api.test.{FakeRequest, Helpers}
 import utils.OCGConfiguration
@@ -40,7 +40,7 @@ class SecureActionSpec extends AnyWordSpec
   }
 
   val parser: BodyParser[AnyContent] = cc.parsers.anyContent
-  val secureAction = new SecureAction(ocgConfig, parser, crypto)(cc.executionContext)
+  val secureAction = new SecureAction(ocgConfig, parser.asInstanceOf[BodyParsers.Default], crypto)(cc.executionContext)
   
   def futureOk: Future[Result] = Future.successful(Ok("Success"))
 
@@ -54,7 +54,7 @@ class SecureActionSpec extends AnyWordSpec
         override def verify(message: String, signature: String): Boolean = true
       }
       val noAuthParser: BodyParser[AnyContent] = cc.parsers.anyContent
-      val noAuthSecureAction = new SecureAction(noAuthConfig, noAuthParser, noAuthCrypto)(cc.executionContext)
+      val noAuthSecureAction = new SecureAction(noAuthConfig, noAuthParser.asInstanceOf[BodyParsers.Default], noAuthCrypto)(cc.executionContext)
 
       val request = FakeRequest().withHeaders("X-User-Context" -> "some-context")
       val result = noAuthSecureAction.invokeBlock(

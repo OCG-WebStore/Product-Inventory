@@ -25,9 +25,5 @@ class ProductModule extends AbstractModule {
     bind(classOf[ProductService])
       .to(classOf[ProductServiceImpl])
       .asEagerSingleton()
-
-    bind(classOf[ActionBuilder[UserRequest, AnyContent]])
-      .to(classOf[SecureAction])
-      .asEagerSingleton()
   }
 }
