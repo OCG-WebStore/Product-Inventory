@@ -23,7 +23,7 @@ scalaTestPlay       = "5.0.0"
 h2                  = "2.2.224"
 
 gradlePlayPlugin    = "0.14"
-releasePlugin       = "3.0.2"
+releasePlugin       = "1.1.0"
 dockerPlugin        = "0.34.0"
 
 ########################################################################################################################
@@ -122,5 +122,5 @@ scalaTest = [
 [plugins]
 
 gradlePlay          = { id = "org.gradle.playframework"         , version.ref = "gradlePlayPlugin"          }
-releasePlugin       = { id = "net.researchgate.release"         , version.ref = "releasePlugin"             }
+releasePlugin       = { id = "io.github.simonhauck.release"     , version.ref = "releasePlugin"             }
 dockerPlugin        = { id = "com.palantir.docker"              , version.ref = "dockerPlugin"              }

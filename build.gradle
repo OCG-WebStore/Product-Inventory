@@ -36,10 +36,8 @@ dependencies {
 version = project.version
 
 release {
-    tagTemplate = 'v${version}'
-    git {
-        requireBranch.set('master')
-    }
+    tagName.set("v{version}")
+    versionPropertyFile.set(layout.projectDirectory.file('gradle.properties'))
 }
 
 docker {
