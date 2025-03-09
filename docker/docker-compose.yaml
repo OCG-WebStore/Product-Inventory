@@ -5,7 +5,9 @@ services:
         build:
             context: ..
             dockerfile: ./docker/Dockerfile
-        image: product-inventory:latest
+            args:
+                - APP_VERSION=${APP_VERSION:-0.1.0}
+        image: product-inventory:${APP_VERSION:-0.1.0}
         container_name: product-inventory
         healthcheck:
             test: ["CMD", "./product-inventory-scripts/healthcheck.sh"]
@@ -14,6 +16,7 @@ services:
             retries: 5
             start_period: 30s
         environment:
+            - APP_VERSION=${APP_VERSION:-0.1.0}
             - DB_URL=jdbc:postgresql://postgres:5432/ocg
             - DB_USER=ocg
             - DB_PASSWORD=ocgsecret

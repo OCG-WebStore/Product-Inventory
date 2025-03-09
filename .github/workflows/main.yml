@@ -25,4 +25,4 @@ jobs:
           distribution: 'temurin'
 
       - name: Build (Gradle)
-        run: ./gradlew build
+        run: ./gradlew build stage

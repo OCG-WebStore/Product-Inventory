@@ -11,7 +11,9 @@ COPY --from=builder /app/docker/product-inventory-scripts /app/product-inventory
 
 RUN chmod +x /app/product-inventory-scripts/healthcheck.sh
 
+ARG APP_VERSION
+ENV VERSION=$APP_VERSION
 ENV _JAVA_OPTIONS="-Dconfig.file=/app/conf/application.conf --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED"
 
 EXPOSE 9000
-CMD ["java", "-jar", "/app/lib/product-inventory.jar"]
+CMD java -Dapp.version=${VERSION} -jar /app/lib/product-inventory-${VERSION}.jar
