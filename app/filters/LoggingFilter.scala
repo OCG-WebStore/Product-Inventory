@@ -6,7 +6,7 @@ import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
 class LoggingFilter @Inject() (implicit ec: ExecutionContext) extends EssentialFilter {
-  private val logger = Logger("AdminProductController")
+  val logger: Logger = Logger("API-Controller")
 
   override def apply(next: EssentialAction): EssentialAction = EssentialAction { request =>
     val startTime = System.currentTimeMillis()
