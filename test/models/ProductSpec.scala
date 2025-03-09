@@ -31,7 +31,7 @@ class ProductSpec extends AnyWordSpec with Matchers {
       product.price shouldBe 1000L
       product.category shouldBe Category.Other
       product.imageKey shouldBe "test-image.jpg"
-      product.customizable shouldBe false // default value
+      product.customizable shouldBe false
     }
 
     "be instantiated with optional fields" in {
