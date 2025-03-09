@@ -14,15 +14,13 @@ plugins {
     id 'application'
     id 'jacoco'
     alias(libs.plugins.gradlePlay)
+    alias(libs.plugins.releasePlugin)
+    alias(libs.plugins.dockerPlugin)
 }
 
 repositories {
     mavenCentral()
     gradlePluginPortal()
-}
-
-scala {
-    version = "2.13.16"
 }
 
 dependencies {
@@ -33,6 +31,27 @@ dependencies {
 
     testImplementation(libs.bundles.scalaTest)
     testRuntimeOnly(libs.scalaXml)
+}
+
+version = project.version
+
+release {
+    tagTemplate = 'v${version}'
+    git {
+        requireBranch.set('master')
+    }
+}
+
+docker {
+    name "${project.name}:${project.version}"
+
+    files fileTree(projectDir) {
+        exclude '.git*', '.gradle', 'build', '.idea', 'out', '**/*.lock', '**/*.log'
+    }
+    buildArgs([
+            'APP_VERSION': "${project.version}"
+    ])
+    dockerfile file('docker/Dockerfile')
 }
 
 jacoco {
