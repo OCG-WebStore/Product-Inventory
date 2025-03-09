@@ -47,7 +47,6 @@ class ProductServiceImplSpec extends AnyWordSpec
     imageKey = Some(testProduct.imageKey + "_updated")
   )
 
-  // Product with ID for repository responses
   val savedProduct: Product = testProduct.copy(id = Some(1L))
   val updatedProduct: Product = Product(
     id = Some(1L),
@@ -61,37 +60,30 @@ class ProductServiceImplSpec extends AnyWordSpec
   "ProductServiceImpl" should {
 
     "delegate createProduct to repository" in {
-      // Arrange
       val mockRepository = mock[ProductRepository]
       val productService = new ProductServiceImpl(mockRepository)
 
       when(mockRepository.create(any[CreateProductCommand])).thenReturn(Future.successful(savedProduct))
 
-      // Act
       val result = productService.createProduct(testCreateCommand).futureValue
 
-      // Assert
       verify(mockRepository, times(1)).create(testCreateCommand)
       result mustBe savedProduct
     }
 
     "delegate getProduct to repository" in {
-      // Arrange
       val mockRepository = mock[ProductRepository]
       val productService = new ProductServiceImpl(mockRepository)
 
       when(mockRepository.findById(anyLong())).thenReturn(Future.successful(Some(savedProduct)))
 
-      // Act
       val result = productService.getProduct(1L).futureValue
 
-      // Assert
       verify(mockRepository, times(1)).findById(1L)
       result mustBe Some(savedProduct)
     }
 
     "delegate getByCategory to repository" in {
-      // Arrange
       val mockRepository = mock[ProductRepository]
       val productService = new ProductServiceImpl(mockRepository)
       val products = Seq(
@@ -101,16 +93,14 @@ class ProductServiceImplSpec extends AnyWordSpec
 
       when(mockRepository.findByCategory(any[String])).thenReturn(Future.successful(products))
 
-      // Act
       val result = productService.getByCategory(Category.Other.stringValue).futureValue
 
-      // Assert
       verify(mockRepository, times(1)).findByCategory(Category.Other.stringValue)
       result mustBe products
     }
 
     "delegate getAllProducts to repository" in {
-      // Arrange
+      
       val mockRepository = mock[ProductRepository]
       val productService = new ProductServiceImpl(mockRepository)
       val products = Seq(
@@ -120,55 +110,47 @@ class ProductServiceImplSpec extends AnyWordSpec
 
       when(mockRepository.findAll()).thenReturn(Future.successful(products))
 
-      // Act
       val result = productService.getAllProducts.futureValue
 
-      // Assert
       verify(mockRepository, times(1)).findAll()
       result mustBe products
     }
 
     "delegate updateProduct to repository" in {
-      // Arrange
+      
       val mockRepository = mock[ProductRepository]
       val productService = new ProductServiceImpl(mockRepository)
 
       when(mockRepository.update(anyLong(), any[UpdateProductCommand])).thenReturn(Future.successful(Some(updatedProduct)))
 
-      // Act
       val result = productService.updateProduct(1L, testUpdateCommand).futureValue
 
-      // Assert
       verify(mockRepository, times(1)).update(1L, testUpdateCommand)
       result mustBe Some(updatedProduct)
     }
 
     "delegate deleteProduct to repository" in {
-      // Arrange
+      
       val mockRepository = mock[ProductRepository]
       val productService = new ProductServiceImpl(mockRepository)
 
       when(mockRepository.delete(anyLong())).thenReturn(Future.successful(true))
 
-      // Act
       val result = productService.deleteProduct(1L).futureValue
 
-      // Assert
       verify(mockRepository, times(1)).delete(1L)
       result mustBe true
     }
 
     "handle repository returning None for non-existent product" in {
-      // Arrange
+      
       val mockRepository = mock[ProductRepository]
       val productService = new ProductServiceImpl(mockRepository)
 
       when(mockRepository.findById(anyLong())).thenReturn(Future.successful(None))
 
-      // Act
       val result = productService.getProduct(999L).futureValue
 
-      // Assert
       verify(mockRepository, times(1)).findById(999L)
       result mustBe None
     }
