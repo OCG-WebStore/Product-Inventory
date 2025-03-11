@@ -1,9 +1,7 @@
 package modules
 
 import com.google.inject.{AbstractModule, Provides}
-import play.api.mvc.{ActionBuilder, AnyContent}
 import repositories.{CachedProductRepository, DBProductRepository, ProductRepository}
-import security.{SecureAction, UserRequest}
 import services.{ProductService, ProductServiceImpl}
 
 import javax.inject.Named

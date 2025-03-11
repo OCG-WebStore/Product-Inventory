@@ -2,9 +2,9 @@ package controllers
 
 import akka.actor.ActorSystem
 import akka.stream.Materializer
-import controllers.commands.{CreateProductCommand, UpdateProductCommand}
 import models.Category.Other
 import models.Product
+import models.commands.{CreateProductCommand, UpdateProductCommand}
 import org.junit.runner.RunWith
 import org.mockito.Mockito._
 import org.mockito.ArgumentMatchers.{any, eq => eqTo}

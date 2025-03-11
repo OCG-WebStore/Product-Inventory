@@ -14,13 +14,16 @@
 <!--        </encoder>-->
 <!--    </appender>-->
 
-    <logger name="AdminProductController" level="INFO" additivity="false">
+    <logger name="API-Controller" level="INFO" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
 
     <logger name="slick" level="INFO" />
     <logger name="slick.jdbc" level="INFO" />
     <logger name="com.zaxxer.hikari" level="INFO" />
+    <logger name="akka.serialization.jackson" level="INFO" />
+    <logger name="org.apache.kafka" level="WARN" />
+    <logger name="kafka" level="WARN" />
 
     <!-- Root Logger -->
     <root level="INFO">

@@ -1,6 +1,6 @@
 package repositories
 
-import controllers.commands.{CreateProductCommand, UpdateProductCommand}
+import models.commands.{CreateProductCommand, UpdateProductCommand}
 import models.{Category, Product}
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile

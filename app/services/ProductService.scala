@@ -1,7 +1,7 @@
 package services
 
-import controllers.commands.{CreateProductCommand, UpdateProductCommand}
 import models.Product
+import models.commands.{CreateProductCommand, UpdateProductCommand}
 
 import scala.concurrent.Future
 

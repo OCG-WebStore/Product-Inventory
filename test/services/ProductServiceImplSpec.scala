@@ -1,6 +1,6 @@
 package services
 
-import controllers.commands.{CreateProductCommand, UpdateProductCommand}
+import models.commands.{CreateProductCommand, UpdateProductCommand}
 import models.{Category, Product}
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.{any, anyLong}

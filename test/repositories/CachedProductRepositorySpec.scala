@@ -2,8 +2,8 @@ package repositories
 
 import akka.actor.ActorSystem
 import akka.stream.Materializer
-import controllers.commands.{CreateProductCommand, UpdateProductCommand}
 import models.Category.Other
+import models.commands.{CreateProductCommand, UpdateProductCommand}
 import models.{Category, Product}
 import org.junit.runner.RunWith
 import org.mockito.Mockito.when

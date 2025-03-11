@@ -1,6 +1,6 @@
 package repositories
 
-import controllers.commands.{CreateProductCommand, UpdateProductCommand}
+import models.commands.{CreateProductCommand, UpdateProductCommand}
 
 import javax.inject.{Inject, Named, Singleton}
 import models.{Category, Product}

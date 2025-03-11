@@ -1,6 +1,6 @@
 package controllers
 
-import controllers.commands.{CreateProductCommand, UpdateProductCommand}
+import models.commands.{CreateProductCommand, UpdateProductCommand}
 import services.ProductService
 import models.errors.{InvalidProduct, ProductNotFound}
 import play.api.Logging
